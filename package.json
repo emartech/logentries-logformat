@@ -1,0 +1,22 @@
+{
+  "name": "logentries-logformat",
+  "version": "0.0.1",
+  "description": "Logformatter for logentries",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha index.spec.coffee --compilers coffee:coffee-script/register"
+  },
+  "author": "viktor.somodi@emarsys.com",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^2.1.0",
+    "lodash": "^2.4.1"
+  },
+  "devDependencies": {
+    "chai": "^1.9.2",
+    "coffee-script": "^1.8.0",
+    "mocha": "^2.0.1",
+    "sinon": "^1.11.1",
+    "sinon-chai": "^2.6.0"
+  }
+}
