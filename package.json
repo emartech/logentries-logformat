@@ -2,10 +2,11 @@
   "name": "logentries-logformat",
   "version": "0.0.1",
   "description": "Logformatter for logentries",
-  "main": "index.js",
+  "main": "./index.js",
   "scripts": {
     "test": "mocha index.spec.coffee --compilers coffee:coffee-script/register"
   },
+
   "author": "viktor.somodi@emarsys.com",
   "license": "MIT",
   "dependencies": {
@@ -18,5 +19,9 @@
     "mocha": "^2.0.1",
     "sinon": "^1.11.1",
     "sinon-chai": "^2.6.0"
-  }
+  },
+  "repositories":[{
+    "type":"git",
+    "url":"git@github.com:emartech/logentries-logformat.git"
+  }]
 }
