@@ -61,7 +61,7 @@ function newrelicInDebugMode() {
 }
 
 module.exports = function(namespace) {
-  logger = new Logger(namespace, require('debug')(namespace));
+  var logger = new Logger(namespace, require('debug')(namespace));
   if (newrelicInDebugMode()) logger.addTransactionLogger(require('newrelic'));
   return logger;
 };
