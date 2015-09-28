@@ -6,6 +6,7 @@ expect = chai.expect
 chai.use sinonChai
 
 Logger = require("./").Logger
+Formatter = require "./formatter"
 
 describe "Logger", ->
   logger = undefined
@@ -13,7 +14,7 @@ describe "Logger", ->
 
   beforeEach ->
     debugSpy = sinon.spy()
-    logger = new Logger "testnamespace", debugSpy
+    logger = new Logger "testnamespace", debugSpy, new Formatter "testnamespace"
 
   describe "common functionalities for normal log methods", ->
     [ "log", "success" ].forEach (logFunction) ->

@@ -2,9 +2,10 @@
 
 var _ = require('lodash');
 
-var Logger = function(namespace, debugFn) {
+var Logger = function(namespace, debugFn, formatter) {
   this.namespace = namespace;
   this.debugger = debugFn;
+  this.formatter = formatter;
 };
 
 Logger.prototype = {
@@ -13,44 +14,24 @@ Logger.prototype = {
   },
 
   log: function(event, data) {
-    this.debugger(this._getPrefix(event) + this._prepareData(data));
+    this.debugger(this.formatter.log(event, data));
   },
 
   success: function(event, data) {
-    this.debugger(this._getPrefix(event) + ' result=success' + this._prepareData(data));
+    this.debugger(this.formatter.success(event, data));
   },
 
   error: function(event, errorMessage, data) {
-    this.debugger(this._getPrefix(event) +' result=error errorMessage="' + errorMessage + '"' + this._prepareData(data));
+    this.debugger(this.formatter.error(event, data, errorMessage));
   },
 
   sanityError: function(event, errorMessage, data) {
-    this.debugger(this._getPrefix(event) +' result=error triggeredBy=sanityCheck errorMessage="' + errorMessage + '"' + this._prepareData(data));
+    this.debugger(this.formatter.sanityError(event, data, errorMessage));
   },
 
   transactionProperty: function(name, value) {
     if (!this.transactionLogger) return;
     this.transactionLogger.addCustomParameter(name, value);
-  },
-
-  _getPrefix: function(event) {
-    return 'type=' + this.namespace + ' event=' + event;
-  },
-
-  _prepareData: function(data) {
-    if (_.isPlainObject(data)) {
-      data = _.map(data, function(value, key) {
-        if (_.isString(value)) {
-          value = JSON.stringify(value);
-        } else {
-          value = '"' + JSON.stringify(value) + '"';
-        }
-
-        return key + '=' + value;
-      }).join(' ');
-    }
-
-    return data ? ' ' + data : '';
   }
 };
 
@@ -61,7 +42,7 @@ function newrelicInDebugMode() {
 }
 
 module.exports = function(namespace) {
-  var logger = new Logger(namespace, require('debug')(namespace));
+  var logger = new Logger(namespace, require('debug')(namespace), new require('./formatter')(namespace));
   if (newrelicInDebugMode()) logger.addTransactionLogger(require('newrelic'));
   return logger;
 };
