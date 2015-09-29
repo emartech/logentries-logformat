@@ -20,8 +20,8 @@ describe "Logger", ->
       describe "#" + logFunction, ->
         it "should log the namespace and the given event name", ->
           logger[logFunction] "test"
-          expect(debugSpy).to.have.been.calledWithMatch /type=testnamespace/
-          expect(debugSpy).to.have.been.calledWithMatch /event=test/
+          expect(debugSpy).to.have.been.calledWithMatch /type="testnamespace"/
+          expect(debugSpy).to.have.been.calledWithMatch /event="test"/
 
         it "should log the given object properties as log property", ->
           logger[logFunction] "test", { par: 1, opar: 2 }
@@ -32,8 +32,8 @@ describe "Logger", ->
       describe "#" + logFunction, ->
         it "should log the namespace and the given event name", ->
           logger[logFunction] "test", "tData"
-          expect(debugSpy).to.have.been.calledWithMatch /type=testnamespace/
-          expect(debugSpy).to.have.been.calledWithMatch /event=test/
+          expect(debugSpy).to.have.been.calledWithMatch /type="testnamespace"/
+          expect(debugSpy).to.have.been.calledWithMatch /event="test"/
 
         it "should log the error message", ->
           logger[logFunction] "test", "emessage"
