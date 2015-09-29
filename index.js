@@ -34,7 +34,7 @@ Logger.prototype = {
   },
 
   _getPrefix: function(event) {
-    return 'type=' + this.namespace + ' event=' + event;
+    return 'type="' + this.namespace + '" event="' + event + '""';
   },
 
   _prepareData: function(data) {
