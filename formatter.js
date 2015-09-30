@@ -1,7 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
-
 var Formatter = function(namespace) {
   this.namespace = namespace;
 };
@@ -32,16 +30,25 @@ Formatter.prototype = {
   },
 
   _prepareData: function(data) {
-    if (_.isPlainObject(data)) {
-      data = _.map(data, function(value, key) {
-        if (_.isString(value)) {
-          value = JSON.stringify(value);
-        } else {
-          value = '"' + JSON.stringify(value) + '"';
+    if (Object.prototype.toString.call(data) === "[object Object]" && Object.getPrototypeOf(data) === Object.prototype) {
+      var tags = [];
+      for (var key in data) {
+        if (!data.hasOwnProperty(key)) {
+          continue;
         }
 
-        return key + '=' + value;
-      }).join(' ');
+        tags.push(function(value, key) {
+          if (typeof value === 'string') {
+            value = JSON.stringify(value);
+          } else {
+            value = '"' + JSON.stringify(value) + '"';
+          }
+
+          return key + '=' + value;
+        }(data[key], key));
+      }
+
+      data = tags.join(' ');
     }
 
     return data ? ' ' + data : '';

@@ -1,6 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
 var Formatter = require('./formatter');
 
 var Logger = function(namespace, debugFn, formatter) {
@@ -39,7 +38,7 @@ Logger.prototype = {
 function newrelicInDebugMode() {
   return process.env.NEW_RELIC_LICENSE_KEY
          && process.env.NEW_RELIC_CAPTURE_PARAMS_ENABLE
-         && _.contains(['trace', 'debug'], process.env.NEW_RELIC_LOGGING_LEVEL);
+         && ['trace', 'debug'].indexOf(process.env.NEW_RELIC_LOGGING_LEVEL) !== -1;
 }
 
 module.exports = function(namespace) {
