@@ -1,6 +1,6 @@
 {
   "name": "logentries-logformat",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Logformatter for logentries",
   "main": "./index.js",
   "scripts": {
