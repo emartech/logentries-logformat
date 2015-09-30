@@ -21,8 +21,8 @@ describe "Logger", ->
       describe "#" + logFunction, ->
         it "should log the namespace and the given event name", ->
           logger[logFunction] "test"
-          expect(debugSpy).to.have.been.calledWithMatch /type=testnamespace/
-          expect(debugSpy).to.have.been.calledWithMatch /event=test/
+          expect(debugSpy).to.have.been.calledWithMatch /type="testnamespace"/
+          expect(debugSpy).to.have.been.calledWithMatch /event="test"/
 
         it "should log the given object properties as log property", ->
           logger[logFunction] "test", { par: 1, opar: 2 }
@@ -33,8 +33,8 @@ describe "Logger", ->
       describe "#" + logFunction, ->
         it "should log the namespace and the given event name", ->
           logger[logFunction] "test", "tData"
-          expect(debugSpy).to.have.been.calledWithMatch /type=testnamespace/
-          expect(debugSpy).to.have.been.calledWithMatch /event=test/
+          expect(debugSpy).to.have.been.calledWithMatch /type="testnamespace"/
+          expect(debugSpy).to.have.been.calledWithMatch /event="test"/
 
         it "should log the error message", ->
           logger[logFunction] "test", "emessage"
@@ -42,7 +42,7 @@ describe "Logger", ->
 
         it "should log the result attribute as error", ->
           logger[logFunction] "test", "emessage"
-          expect(debugSpy).to.have.been.calledWithMatch /result=error/
+          expect(debugSpy).to.have.been.calledWithMatch /result="error"/
 
         it "should log the given object properties as log property", ->
           logger[logFunction] "test", "emessage", { par: 1, opar: 2 }
@@ -52,12 +52,12 @@ describe "Logger", ->
   describe "#success", ->
     it "should log the result attribute as success", ->
       logger.success "test"
-      expect(debugSpy).to.have.been.calledWithMatch /result=success/
+      expect(debugSpy).to.have.been.calledWithMatch /result="success"/
 
   describe "#sanityError", ->
     it "should log the triggered by attribute as sanity check", ->
       logger.sanityError "test", "emessage"
-      expect(debugSpy).to.have.been.calledWithMatch /triggeredBy=sanityCheck/
+      expect(debugSpy).to.have.been.calledWithMatch /triggeredBy="sanityCheck"/
 
   describe "#transactionProperty", ->
     newrelicMock = undefined

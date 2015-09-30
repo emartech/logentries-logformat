@@ -1,6 +1,4 @@
-/**
- * Created by adambrunner on 28/09/15.
- */
+'use strict';
 
 var _ = require('lodash');
 
@@ -14,23 +12,23 @@ Formatter.prototype = {
   },
 
   success: function(event, data) {
-    return this._composeLog(event, data, ['result=success']);
+    return this._composeLog(event, data, ['result="success"']);
   },
 
   error: function(event, data, errorMessage) {
-    return this._composeLog(event, data, ['result=error', 'errorMessage="' + errorMessage + '"']);
+    return this._composeLog(event, data, ['result="error"', 'errorMessage="' + errorMessage + '"']);
   },
 
   sanityError: function(event, data, errorMessage) {
-    return this._composeLog(event, data, ['result=error', 'triggeredBy=sanityCheck', 'errorMessage="' + errorMessage + '"']);
+    return this._composeLog(event, data, ['result="error"', 'triggeredBy="sanityCheck"', 'errorMessage="' + errorMessage + '"']);
   },
 
   _composeLog: function(event, data, tags) {
-    return this._getPrefix(event) + (tags ? tags.join(' ') : '') + this._prepareData(data)
+    return this._getPrefix(event) + ' ' + (tags ? tags.join(' ') : '') + this._prepareData(data)
   },
 
   _getPrefix: function(event) {
-    return 'type=' + this.namespace + ' event=' + event;
+    return 'type="' + this.namespace + '" event="' + event + '"';
   },
 
   _prepareData: function(data) {
