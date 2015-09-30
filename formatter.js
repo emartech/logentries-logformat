@@ -10,48 +10,66 @@ Formatter.prototype = {
   },
 
   success: function(event, data) {
-    return this._composeLog(event, data, ['result="success"']);
+    return this._composeLog(event, data, { result: 'success' });
   },
 
   error: function(event, data, errorMessage) {
-    return this._composeLog(event, data, ['result="error"', 'errorMessage="' + errorMessage + '"']);
+    return this._composeLog(event, data, { result: 'error', errorMessage: errorMessage });
   },
 
   sanityError: function(event, data, errorMessage) {
-    return this._composeLog(event, data, ['result="error"', 'triggeredBy="sanityCheck"', 'errorMessage="' + errorMessage + '"']);
+    return this._composeLog(event, data, { result: 'error', triggeredBy: 'sanityCheck', errorMessage: errorMessage });
   },
 
-  _composeLog: function(event, data, tags) {
-    return this._getPrefix(event) + ' ' + (tags ? tags.join(' ') : '') + this._prepareData(data)
-  },
+  _composeLog: function(event, data, extraTags) {
+    var tags = extraTags || {};
 
-  _getPrefix: function(event) {
-    return 'type="' + this.namespace + '" event="' + event + '"';
+    tags.event = event;
+    tags.type = this.namespace;
+
+    return this._composeTags(tags) + this._prepareData(data)
   },
 
   _prepareData: function(data) {
-    if (Object.prototype.toString.call(data) === "[object Object]" && Object.getPrototypeOf(data) === Object.prototype) {
-      var tags = [];
-      for (var key in data) {
-        if (!data.hasOwnProperty(key)) {
-          continue;
-        }
-
-        tags.push(function(value, key) {
-          if (typeof value === 'string') {
-            value = JSON.stringify(value);
-          } else {
-            value = '"' + JSON.stringify(value) + '"';
-          }
-
-          return key + '=' + value;
-        }(data[key], key));
-      }
-
-      data = tags.join(' ');
+    var retval;
+    if (['string', 'number', 'boolean'].indexOf(typeof data) !== -1) {
+      retval = data.toString();
+    }
+    else if (data instanceof Date) {
+      retval = (new Date(data.toUTCString())).toISOString();
+    }
+    else if (Object.prototype.toString.call(data) === "[object Object]" && Object.getPrototypeOf(data) === Object.prototype) {
+      retval = this._composeTags(data);
+    }
+    else {
+      retval = '';
     }
 
-    return data ? ' ' + data : '';
+    return retval ? ' ' + retval : '';
+  },
+
+  _composeTags: function(tags) {
+    var dataTags = [];
+    for (var key in tags) {
+      if (!tags.hasOwnProperty(key)) {
+        continue;
+      }
+
+      dataTags.push(this._tagToString(key, tags[key]));
+    }
+
+    return dataTags.join(' ');
+  },
+
+  _tagToString: function(name, tagValue) {
+    var value;
+    if (typeof tagValue == 'string') {
+      value = JSON.stringify(tagValue);
+    } else {
+      value = '"' + JSON.stringify(tagValue) + '"';
+    }
+
+    return name + '=' + value;
   }
 };
 
