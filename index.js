@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var Formatter = require('./formatter');
 
 var Logger = function(namespace, debugFn, formatter) {
   this.namespace = namespace;
@@ -42,7 +43,7 @@ function newrelicInDebugMode() {
 }
 
 module.exports = function(namespace) {
-  var logger = new Logger(namespace, require('debug')(namespace), new require('./formatter')(namespace));
+  var logger = new Logger(namespace, require('debug')(namespace), new Formatter(namespace));
   if (newrelicInDebugMode()) logger.addTransactionLogger(require('newrelic'));
   return logger;
 };
