@@ -48,6 +48,22 @@ describe "Logger", ->
           logger[logFunction] "test", "emessage", { par: 1, opar: 2 }
           expect(debugSpy).to.have.been.calledWithMatch /par="1" opar="2"/
 
+        it "should log the given log data as it is if it is a string", ->
+          logger[logFunction] "test", "emessage", "#data#"
+          expect(debugSpy).to.have.been.calledWithMatch /#data#/
+
+        it "should log the given log data as it is if it is a boolean", ->
+          logger[logFunction] "test", "emessage", true
+          expect(debugSpy).to.have.been.calledWithMatch /\btrue\b/
+
+        it "should log the given log data as ISO 8601 in UTC timezone if it is a Date", ->
+          logger[logFunction] "test", "emessage", new Date('2015-09-15 02:00:00 +0200')
+          expect(debugSpy).to.have.been.calledWithMatch /2015-09-15T00:00:00.000Z/
+
+        it "should not log the given log data if it is not a string or plain object", ->
+          logger[logFunction] "test", "emessage", ->
+          expect(debugSpy).to.not.have.been.calledWithMatch /function/
+
 
   describe "#success", ->
     it "should log the result attribute as success", ->
