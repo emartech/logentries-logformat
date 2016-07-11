@@ -4,7 +4,7 @@
   "description": "Logformatter for logentries",
   "main": "./index.js",
   "scripts": {
-    "test": "mocha index.spec.coffee --compilers coffee:coffee-script/register",
+    "test": "mocha index.spec.js",
     "release-patch": "npm version patch -m 'chore(package): update version to %s'",
     "release-minor": "npm version minor -m 'chore(package): update version to %s'",
     "release-major": "npm version major -m 'chore(package): update version to %s'"
@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "chai": "^3.2.0",
-    "coffee-script": "^1.9.3",
     "mocha": "^2.2.5",
     "sinon": "^1.15.4",
     "sinon-chai": "^2.8.0"
