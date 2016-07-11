@@ -22,11 +22,18 @@ Logger.prototype = {
   },
 
   error: function(event, errorMessage, data) {
-    this.debugger(this.formatter.error(event, data, errorMessage));
+    this._error.call(this, event, errorMessage, data, 'error');
   },
 
   sanityError: function(event, errorMessage, data) {
-    this.debugger(this.formatter.sanityError(event, data, errorMessage));
+    this._error.call(this, event, errorMessage, data, 'sanityError');
+  },
+
+  _error: function(event, errorMessage, data, logFunction) {
+    if (errorMessage instanceof Error) {
+      errorMessage = errorMessage.message;
+    }
+    this.debugger(this.formatter[logFunction](event, data, errorMessage));
   },
 
   transactionProperty: function(name, value) {

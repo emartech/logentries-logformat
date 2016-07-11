@@ -40,6 +40,10 @@ describe "Logger", ->
           logger[logFunction] "test", "emessage"
           expect(debugSpy).to.have.been.calledWithMatch /errorMessage="emessage"/
 
+        it "should set the correct error message if Error object was given", ->
+          logger[logFunction] "test", new Error "emessage"
+          expect(debugSpy).to.have.been.calledWithMatch /errorMessage="emessage"/
+
         it "should log the result attribute as error", ->
           logger[logFunction] "test", "emessage"
           expect(debugSpy).to.have.been.calledWithMatch /result="error"/
