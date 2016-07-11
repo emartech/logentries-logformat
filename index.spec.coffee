@@ -63,6 +63,27 @@ describe "Logger", ->
       logger.sanityError "test", "emessage"
       expect(debugSpy).to.have.been.calledWithMatch /triggeredBy="sanityCheck"/
 
+  describe "#exception handling", ->
+    exception = undefined
+
+    beforeEach ->
+      exception = new Error "emessage"
+      exception.code = 12345
+
+    it "should log the given error object as data", ->
+      logger.error "test", exception
+      expect(debugSpy).to.have.been.calledWithMatch /code="12345"/
+      expect(debugSpy).to.have.been.calledWithMatch /stack="/
+
+    it "should extend the given data with the error object", ->
+      logger.error "test", exception, { par: 1 }
+      expect(debugSpy).to.have.been.calledWithMatch /code="12345"/
+      expect(debugSpy).to.have.been.calledWithMatch /par="1"/
+
+    it "should not overwrite the given data with the error object\s property", ->
+      logger.error "test", exception, { code: 67890 }
+      expect(debugSpy).to.have.been.calledWithMatch /code="67890"/
+
   describe "#transactionProperty", ->
     newrelicMock = undefined
 

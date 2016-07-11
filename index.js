@@ -31,6 +31,8 @@ Logger.prototype = {
 
   _error: function(event, errorMessage, data, logFunction) {
     if (errorMessage instanceof Error) {
+      data = Object.assign({ stack: errorMessage.stack }, errorMessage, data);
+
       errorMessage = errorMessage.message;
     }
     this.debugger(this.formatter[logFunction](event, data, errorMessage));
